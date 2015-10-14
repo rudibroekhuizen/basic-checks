@@ -11,4 +11,10 @@ git and bundler installed, intenet acess
 `bundle install --path vendor/bundle`
 
 ### Running
-`bundle exec rake spec`
+Human readable
+
+`bundle exec rspec`
+
+Nagios format
+
+`bundle exec rspec -f RSpec::Nagios::Formatter`
