@@ -1,7 +1,7 @@
 ## Setup
 
 ### Setup Requirements
-git and bundler installed, intenet acess
+git and bundler installed, internet access
 
 ### Install
 `git clone https://github.com/naturalis/basic-checks.git`
