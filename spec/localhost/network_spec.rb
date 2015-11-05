@@ -20,7 +20,7 @@ describe 'Basic network checks' do
     end
   end
   describe 'Check internal connectivity' do
-    describe host('kilo.naturalis.nl') do
+    describe host('stack.naturalis.nl') do
       it { should be_resolvable }
       it { should be_reachable.with( :port => 443, :proto => 'tcp' ) }
     end
