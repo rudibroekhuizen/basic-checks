@@ -2,15 +2,25 @@ require 'spec_helper'
 require 'net/ip'
 require 'net/http'
 require 'yaml'
+require 'set'
 
-public def working_url?(url_str)
-  url = URI.parse(url_str)
-  Net::HTTP.start(url.host, url.port) do |http|
-    http.head(url.request_uri).code == '200'
+public
+def working_url?(url, max_redirects=8)
+  response = nil
+  seen = Set.new
+  loop do
+    url = URI.parse(url)
+    break if seen.include? url.to_s
+    break if seen.size > max_redirects
+    seen.add(url.to_s)
+    response = Net::HTTP.new(url.host, url.port).request_head(url.path)
+    if response.kind_of?(Net::HTTPRedirection)
+      url = response['location']
+    else
+      break
+    end
   end
-#  true
-rescue
-  false
+  response.kind_of?(Net::HTTPSuccess) && url.to_s
 end
 
 
@@ -18,9 +28,7 @@ describe 'Basic network checks' do
   naturl = 'myexternalip.com'
   natip = Net::HTTP.get("#{naturl}", '/raw')
   mygateway = Net::IP.routes.gateways[0].via
-
   ejournals = YAML.load_file('ejournals.yaml')
-#  puts ejournals['ejournalurls']
 
   describe 'Check default gateway' do
     describe routing_table do
@@ -54,11 +62,13 @@ describe 'Basic network checks' do
   describe 'Check e-journals' do
      ejournals['ejournalurls'].each do |url|
        describe url do
+#       begin
+#         RestClient.head(url).code != 404
+#       rescue => e
+#         e.response
          it { should be_working_url(url) }
-       end 
-#       it "#{url} can be downloaded" do
-#         working_url(url)
 #       end
+       end 
      end
   end
 end
