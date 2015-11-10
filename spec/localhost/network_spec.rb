@@ -1,16 +1,17 @@
 require 'spec_helper'
+require 'net/ip'
 require 'net/http'
 
 describe 'Basic network checks' do
-  gateway = `ip route show | awk '$3 ~ /^[1-9]+/ {print $3;}'|head -1`.strip
   naturl = 'myexternalip.com'
   natip = Net::HTTP.get("#{naturl}", '/raw')
+  mygateway = Net::IP.routes.gateways[0].via
 
   describe 'Check default gateway' do
     describe routing_table do
-      it { should have_entry( :destination => 'default', :gateway => "#{gateway}") }
+      it { should have_entry( :destination => 'default', :gateway => "#{mygateway}") }
     end
-    describe host("#{gateway}") do
+    describe host("#{mygateway}") do
       it { should be_reachable }
     end
   end
