@@ -2,33 +2,32 @@ require 'spec_helper'
 require 'net/ip'
 require 'net/http'
 require 'yaml'
-require 'set'
 
 public
-def working_url?(url, max_redirects=8)
-  response = nil
-  seen = Set.new
-  loop do
-    url = URI.parse(url)
-    break if seen.include? url.to_s
-    break if seen.size > max_redirects
-    seen.add(url.to_s)
-    response = Net::HTTP.new(url.host, url.port).request_head(url.path)
-    if response.kind_of?(Net::HTTPRedirection)
-      url = response['location']
-    else
-      break
-    end
+def working_url(url)
+  uri = URI.parse(url)
+  if uri.path == ""
+   uri.path = '/'
   end
-  response.kind_of?(Net::HTTPSuccess) && url.to_s
+  result = Net::HTTP.start(uri.host, uri.port) { |http| http.get(uri.path) }
+  return result.code.to_i
 end
 
+def pdf_url(url)
+  query = %Q[/usr/bin/curl -L -s -b "cookieSet=1" --head "#{url}" | grep Content-Type]
+  result = `#{query}`
+  if result.include? "application/pdf"
+    return true
+  else
+    return false
+  end
+end
 
 describe 'Basic network checks' do
   naturl = 'myexternalip.com'
   natip = Net::HTTP.get("#{naturl}", '/raw')
   mygateway = Net::IP.routes.gateways[0].via
-  ejournals = YAML.load_file('ejournals.yaml')
+#  ejournals = YAML.load_file('ejournals.yaml')
 
   describe 'Check default gateway' do
     describe routing_table do
@@ -58,17 +57,15 @@ describe 'Basic network checks' do
     it "#{natip} is the outside, translated ip address" do
     end
   end
+end
 
-  describe 'Check e-journals' do
-     ejournals['ejournalurls'].each do |url|
-       describe url do
-#       begin
-#         RestClient.head(url).code != 404
-#       rescue => e
-#         e.response
-         it { should be_working_url(url) }
-#       end
-       end 
-     end
+describe 'Check e-journals' do
+  ejournals = YAML.load_file('ejournals.yaml')
+  ejournals['ejournalurls'].each do |url|
+    query = %Q[/usr/bin/curl -L -s -b "cookieSet=1" --head "#{url}" | grep Content-Type | grep 'application/pdf']
+    describe command(query) do
+      its(:exit_status) { should eq 0 }
+    end
   end
 end
+
