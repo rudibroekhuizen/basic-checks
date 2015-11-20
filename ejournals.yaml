@@ -2,7 +2,6 @@ ejournalurls:
 #  - "http://www.webofknowledge.com"
   - "http://www.tandfonline.com/doi/pdf/10.1080/13235818.2014.888971"
   - "http://www.mapress.com/mr/content/v32/2012/n1p042.pdf"
-
 #  - "http://ejournals.ebsco.com/RemoteRedirect.asp?IsPaginated=0&ContentType=Article&ArticleID=34877952&ContributionFullTextIndex=1&RemoteURL=FullTextDelivery%2Easp%3Fformat%3Dfulltext%26ciid%3D34877952%26ftindex%3D1"
   - "http://www.tandfonline.com/doi/pdf/10.1080/13235818.2014.919696"
   - "http://jm.lyellcollection.org/content/34/1/21.full.pdf"
@@ -10,15 +9,12 @@ ejournalurls:
   - "http://mspecies.oxfordjournals.org/content/mspecies/43/882/141.full.pdf"
   - "http://sysbio.oxfordjournals.org/content/49/1/3.full.pdf"
   - "http://sysbio.oxfordjournals.org/content/50/6/817.full.pdf"
-
 #  - "http://onlinelibrary.wiley.com/doi/10.1111/j.1600-048X.2010.05175.x/epdf"
 #  - "http://onlinelibrary.wiley.com/doi/10.1111/j.1600-048X.2012.05474.x/pdf"
 #  - "http://onlinelibrary.wiley.com/doi/10.1046/j.1439-0469.2002.00176.x/full"
 #  - "http://onlinelibrary.wiley.com/doi/10.1046/j.1439-0469.2002.00176.x/epdf"
 #  - "http://onlinelibrary.wiley.com/doi/10.1111/j.1439-0469.1998.tb00839.x/epdf"
-
 #  - "http://journals.cambridge.org/action/displayFulltext?type=1&pdftype=1&fid=6829380&jid=ORX&volumeId=44&issueId=01&aid=6829372"
-
   - "http://www.tandfonline.com/doi/pdf/10.1080/00306525.1999.9634525"
   - "http://www.tandfonline.com/doi/pdf/10.1080/00306525.2000.9639832"
 #  - "http://www.jstor.org/stable/full/10.1086/651588"
